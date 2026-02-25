@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQs — Zolo Fashions</title>
+  <meta name="description" content="Frequently asked questions about orders, shipping, returns, payments and more at Zolo Fashions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header__inner container">
+      <button class="header__burger" aria-label="Menu" id="burger"><span></span><span></span><span></span></button>
+      <div class="header__logo"><a href="index.html">ZOLO<span>FASHIONS</span></a></div>
+      <nav class="header__nav" id="nav">
+        <ul>
+          <li class="has-mega">
+            <a href="#">Women <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></a>
+            <div class="mega">
+              <div class="mega__col"><h5>Clothing</h5><a href="#">Dresses</a><a href="#">Tops &amp; Blouses</a><a href="#">Trousers &amp; Jeans</a><a href="#">Skirts</a><a href="#">Jackets &amp; Coats</a><a href="#">Knitwear</a></div>
+              <div class="mega__col"><h5>Occasion</h5><a href="#">Casual</a><a href="#">Office Wear</a><a href="#">Evening</a><a href="#">Beach &amp; Resort</a><a href="#">Activewear</a></div>
+              <div class="mega__col"><h5>Accessories</h5><a href="#">Bags</a><a href="#">Jewellery</a><a href="#">Scarves</a><a href="#">Footwear</a></div>
+              <div class="mega__featured"><div class="mega__img"></div><span>New In</span><strong>Summer '25</strong></div>
+            </div>
+          </li>
+          <li class="has-mega">
+            <a href="#">Men <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></a>
+            <div class="mega">
+              <div class="mega__col"><h5>Clothing</h5><a href="#">T-Shirts &amp; Polos</a><a href="#">Shirts</a><a href="#">Trousers &amp; Chinos</a><a href="#">Jeans</a><a href="#">Jackets &amp; Coats</a></div>
+              <div class="mega__col"><h5>Style</h5><a href="#">Casual</a><a href="#">Smart Casual</a><a href="#">Formal</a><a href="#">Streetwear</a></div>
+              <div class="mega__col"><h5>Accessories</h5><a href="#">Bags &amp; Wallets</a><a href="#">Belts</a><a href="#">Caps &amp; Hats</a><a href="#">Footwear</a></div>
+              <div class="mega__featured"><div class="mega__img mega__img--2"></div><span>Essentials</span><strong>The Core Edit</strong></div>
+            </div>
+          </li>
+          <li><a href="#">New In</a></li>
+          <li><a href="#">Collections</a></li>
+          <li><a href="#" class="nav-vip">VIP</a></li>
+          <li><a href="#" class="nav-sale">Sale</a></li>
+        </ul>
+      </nav>
+      <div class="header__actions">
+        <button class="action-btn" id="searchToggle" aria-label="Search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+        <a href="login.html" class="action-btn" aria-label="Account"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+        <button class="action-btn action-btn--cart" aria-label="Bag"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="cart-badge">0</span></button>
+      </div>
+    </div>
+    <div class="search-bar" id="searchBar">
+      <div class="container search-bar__inner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" placeholder="Search for products, brands, categories..." id="searchInput" />
+        <button class="search-bar__close" id="searchClose"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <span>FAQs</span>
+        </nav>
+        <h1 class="page-hero__title">Frequently Asked Questions</h1>
+        <p class="page-hero__sub">Find answers to common questions about orders, shipping, returns, payments and more. Can't find what you're looking for? <a href="contact.html">Contact us</a> and we'll be happy to help.</p>
+      </div>
+    </section>
+
+    <!-- FAQ: ORDERS & SHIPPING -->
+    <section class="faq-section container">
+      <h2 class="faq-section__title">Orders &amp; Shipping</h2>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How long does delivery take within India?</summary>
+        <p>Standard delivery takes 5-7 business days across India. Metro cities (Delhi, Mumbai, Bangalore, Chennai, Hyderabad, Kolkata) typically receive orders within 3-5 business days. Express delivery is available for select pin codes and delivers within 1-2 business days for an additional fee.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Do you offer free shipping?</summary>
+        <p>Yes! We offer free standard delivery on all orders above ₹999. VIP Gold and Platinum members enjoy free delivery on every order regardless of the amount. Express delivery charges apply separately.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How can I track my order?</summary>
+        <p>Once your order is dispatched, you will receive an SMS and email with a tracking link and AWB (Air Waybill) number. You can also track your order anytime from the <a href="track-order.html">Track Your Order</a> page or through your account dashboard under "My Orders".</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Can I change or cancel my order after placing it?</summary>
+        <p>You can modify or cancel your order within 1 hour of placing it, provided it has not been dispatched. To request a change, visit your account dashboard or contact our support team at <strong>+91 9234408700</strong>. Once an order is shipped, it cannot be cancelled but you can refuse delivery or initiate a return.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Do you ship to all pin codes in India?</summary>
+        <p>We deliver to over 25,000 pin codes across India through our logistics partners. During checkout, you can enter your pin code to check serviceability. Cash on Delivery (COD) may not be available for all pin codes. Remote and hilly areas may have slightly longer delivery times.</p>
+      </details>
+    </section>
+
+    <!-- FAQ: RETURNS & REFUNDS -->
+    <section class="faq-section container">
+      <h2 class="faq-section__title">Returns &amp; Refunds</h2>
+
+      <details class="faq-item vip__faq-item">
+        <summary>What is your return policy?</summary>
+        <p>We offer a hassle-free 30-day return policy on most items. Products must be unused, unworn, unwashed, and returned in their original packaging with all tags attached. VIP Gold members get a 60-day return window and Platinum members enjoy a 90-day return window.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How do I initiate a return?</summary>
+        <p>Log in to your account, go to "My Orders", select the order containing the item you wish to return, and click "Return Item". Choose a reason for the return and schedule a free pickup. Our courier partner will collect the item from your doorstep within 2-3 business days.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How long does a refund take?</summary>
+        <p>Once we receive and inspect the returned item, refunds are processed within 3-5 business days. The amount will be credited back to your original payment method. UPI and wallet refunds are typically instant, while bank and card refunds may take 5-7 business days to reflect in your statement.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Can I exchange an item for a different size or colour?</summary>
+        <p>Yes, exchanges are available for a different size or colour of the same product, subject to stock availability. Initiate an exchange through the "My Orders" section. The replacement will be dispatched once we receive the original item, or you can opt for a simultaneous exchange (pickup and delivery together) in select cities.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Are there any items that cannot be returned?</summary>
+        <p>For hygiene and safety reasons, innerwear, swimwear, socks, and jewellery cannot be returned or exchanged. Items purchased during final clearance sales marked as "non-returnable" are also exempt. Customised or altered products cannot be returned unless there is a manufacturing defect.</p>
+      </details>
+    </section>
+
+    <!-- FAQ: PAYMENTS -->
+    <section class="faq-section container">
+      <h2 class="faq-section__title">Payments</h2>
+
+      <details class="faq-item vip__faq-item">
+        <summary>What payment methods do you accept?</summary>
+        <p>We accept a wide range of payment methods including Visa, Mastercard, RuPay debit and credit cards, UPI (Google Pay, PhonePe, Paytm, BHIM), Net Banking from all major Indian banks, mobile wallets, EMI (no-cost EMI available on select banks), and Cash on Delivery (COD).</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Is Cash on Delivery (COD) available?</summary>
+        <p>Yes, COD is available for orders up to ₹10,000 at most serviceable pin codes. A nominal COD handling fee of ₹49 may apply on orders below ₹499. COD is not available for international shipments or certain remote locations. You can check COD availability by entering your pin code at checkout.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Are online payments secure on Zolo Fashions?</summary>
+        <p>Absolutely. All transactions on Zolo Fashions are protected with 256-bit SSL encryption. We use Razorpay as our payment gateway, which is PCI DSS Level 1 compliant. We never store your full card details on our servers. All UPI and Net Banking payments are processed through secure bank channels.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Do you offer no-cost EMI?</summary>
+        <p>Yes, no-cost EMI is available on orders above ₹3,000 with select bank credit cards. EMI tenures of 3, 6, 9, and 12 months are offered. The EMI option and eligible banks will be displayed at checkout. Standard EMI with interest is also available on most credit cards.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>My payment failed but the amount was deducted. What should I do?</summary>
+        <p>In rare cases, the amount may be debited due to a network issue even if the order was not confirmed. Do not worry — if the transaction fails, the amount is automatically refunded to your account within 5-7 business days. If you do not receive the refund, please contact us with your order ID and transaction details at <a href="mailto:idealtradingco940@gmail.com">idealtradingco940@gmail.com</a>.</p>
+      </details>
+    </section>
+
+    <!-- FAQ: ACCOUNT & VIP PROGRAMME -->
+    <section class="faq-section container">
+      <h2 class="faq-section__title">Account &amp; VIP Programme</h2>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How do I create an account?</summary>
+        <p>Creating an account is quick and free. Click the account icon in the top navigation or visit our <a href="register.html">registration page</a>. You can sign up using your email address and mobile number. An OTP will be sent to verify your mobile number. Once verified, you are automatically enrolled in our Silver VIP tier.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How does the VIP Programme work?</summary>
+        <p>Our VIP Programme has three tiers — Silver, Gold, and Platinum. You earn points on every purchase (1 point per ₹100 at Silver, 1.5 at Gold, 2 at Platinum). As your monthly spending increases, you unlock higher tiers with better discounts (5%, 10%, 18% off respectively), extended return windows, and exclusive perks like personal styling and private event invitations.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>When do VIP points expire?</summary>
+        <p>VIP points are valid for 12 months from the date they were earned. Your tier status is recalculated every 30 days based on your spending. If you fall below a tier threshold, you will receive an email notification 7 days before your status changes, giving you time to maintain your tier.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How do I redeem VIP points?</summary>
+        <p>At checkout, select the "Pay with Points" option. 100 points equals ₹50 in value. You can redeem up to 30% of your order total using points. Points cannot be combined with certain promotional offers but do stack with your standard VIP tier discount.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>I forgot my password. How do I reset it?</summary>
+        <p>On the login page, click "Forgot Password?" and enter your registered email address. You will receive a password reset link valid for 24 hours. If you registered with your mobile number, you can also reset via OTP. For further assistance, contact our support team.</p>
+      </details>
+    </section>
+
+    <!-- FAQ: PRODUCTS -->
+    <section class="faq-section container">
+      <h2 class="faq-section__title">Products</h2>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How do I find the right size?</summary>
+        <p>Each product page includes a detailed size chart with measurements in both inches and centimetres. We recommend measuring yourself and comparing with the chart before ordering. If you are between sizes, we suggest going one size up for a comfortable fit. Our customer support team can also assist you with sizing queries.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Are your product images true to colour?</summary>
+        <p>We make every effort to display colours as accurately as possible. However, slight variations may occur due to differences in screen settings, resolution, and lighting conditions during photography. If you receive a product that differs significantly from what was shown, you are welcome to return it under our 30-day return policy.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>How should I care for my garments?</summary>
+        <p>Each product comes with a care label sewn into the garment with specific washing and care instructions. As a general rule, we recommend washing in cold water, avoiding bleach, and air-drying when possible to preserve fabric quality and colour. Delicate fabrics like silk and linen should ideally be dry-cleaned.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Do you restock sold-out items?</summary>
+        <p>Popular items are restocked regularly. On any sold-out product page, you can click the "Notify Me" button and enter your email to be alerted as soon as the item is back in stock. Limited edition and seasonal collections may not be restocked once sold out.</p>
+      </details>
+
+      <details class="faq-item vip__faq-item">
+        <summary>Are your products ethically sourced?</summary>
+        <p>Yes, Zolo Fashions is committed to ethical and responsible sourcing. We work directly with trusted manufacturers who follow fair labour practices. Our fabrics are sourced from certified mills and we are continuously working towards more sustainable packaging and production processes.</p>
+      </details>
+    </section>
+
+    <!-- STILL NEED HELP -->
+    <section class="faq-section faq-section--cta container">
+      <div class="faq-cta">
+        <h2 class="faq-cta__title">Still have questions?</h2>
+        <p class="faq-cta__text">Our support team is available Monday to Saturday, 10AM to 6PM IST. We typically respond within a few hours.</p>
+        <div class="faq-cta__actions">
+          <a href="contact.html" class="btn btn--black">Contact Us</a>
+          <a href="tel:+919234408700" class="btn btn--outline-black">Call +91 9234408700</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__trust">
+      <div class="container footer__trust-grid">
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><strong>Free Delivery</strong><span>On orders ₹999+</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><div><strong>30-Day Returns</strong><span>Easy, free returns</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div><strong>Secure Payment</strong><span>256-bit SSL encryption</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.59 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.5 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><div><strong>Phone Support</strong><span>+91 9234408700</span></div></div>
+      </div>
+    </div>
+    <div class="footer__main container">
+      <div class="footer__brand">
+        <div class="footer__logo">ZOLO<span>FASHIONS</span></div>
+        <p>Fashion for those who stand out.<br />Curated textiles and lifestyle products since 2025.</p>
+        <p class="footer__legal-name">Zolo Trends Private Limited</p>
+      </div>
+      <div class="footer__col">
+        <h5>Shop</h5>
+        <a href="#">New Arrivals</a><a href="#">Women's Clothing</a><a href="#">Men's Clothing</a><a href="#">Accessories</a><a href="#">Footwear</a><a href="#">Collections</a><a href="#">Limited Editions</a><a href="#" class="footer__link--sale">Sale — Up to 70% Off</a>
+      </div>
+      <div class="footer__col">
+        <h5>Support</h5>
+        <a href="contact.html">Contact Us</a>
+        <a href="faq.html">FAQs</a>
+        <a href="shipping.html">Shipping &amp; Returns</a>
+        <a href="track-order.html">Track Your Order</a>
+        <a href="#vip">VIP Programme</a>
+      </div>
+      <div class="footer__col footer__col--contact">
+        <h5>Contact</h5>
+        <div class="footer__contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.59 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.5 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <div><a href="tel:+919234408700">+91 9234408700</a><small>Mon–Sat, 10AM–6PM IST</small></div>
+        </div>
+        <div class="footer__contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div><a href="mailto:idealtradingco940@gmail.com">idealtradingco940@gmail.com</a><small>We reply within 24 hours</small></div>
+        </div>
+        <div class="footer__contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><span>Desri Road, Sadabpur Mahua<br />Near Canara Bank, Mahua<br />Vaishali, Bihar — 844122, India</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer__reg">
+      <div class="container footer__reg-inner">
+        <div class="footer__reg-item"><span class="reg-key">Legal Name</span><span>Zolo Trends Private Limited</span></div>
+        <div class="footer__reg-item"><span class="reg-key">CIN</span><span>U47820BR2025PTC079961</span></div>
+        <div class="footer__reg-item"><span class="reg-key">GSTIN</span><span>10AACCZ7944H1Z9</span></div>
+        <div class="footer__reg-item"><span class="reg-key">PAN</span><span>AACCZ7944H</span></div>
+        <div class="footer__reg-item"><span class="reg-key">TAN</span><span>PTNZ00667C</span></div>
+        <div class="footer__reg-item"><span class="reg-key">Incorporated</span><span>06 Nov 2025 · Bihar, India</span></div>
+        <div class="footer__reg-item"><span class="reg-key">Directors</span><span>Prince Kumar &amp; Parveen Kumar</span></div>
+      </div>
+    </div>
+    <div class="footer__pay">
+      <div class="container footer__pay-inner">
+        <span class="footer__pay-label">We accept:</span>
+        <div class="footer__pay-icons"><span class="pay-chip">Visa</span><span class="pay-chip">Mastercard</span><span class="pay-chip">RuPay</span><span class="pay-chip">UPI</span><span class="pay-chip">Net Banking</span><span class="pay-chip">COD</span><span class="pay-chip">EMI</span></div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>© 2025 Zolo Trends Private Limited (Zolo Fashions) · All rights reserved · Registered in Bihar, India</p>
+        <nav class="footer__bottom-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="shipping.html">Return &amp; Refund Policy</a><a href="shipping.html">Shipping Policy</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

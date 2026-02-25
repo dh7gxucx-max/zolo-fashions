@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Your Order — Zolo Fashions</title>
+  <meta name="description" content="Track your Zolo Fashions order in real time. Enter your Order ID and email to see the latest status." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: var(--gray-1);
+      padding: 60px 0 50px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-hero h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    .page-hero p {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-4);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 18px;
+    }
+    .breadcrumb a {
+      color: var(--gray-4);
+      transition: color var(--transition);
+    }
+    .breadcrumb a:hover { color: var(--black); }
+    .breadcrumb .sep { font-size: 10px; }
+
+    /* ─── PAGE CONTENT ─── */
+    .page-content {
+      padding: 60px 0 80px;
+    }
+
+    /* ─── TRACK FORM ─── */
+    .track-form {
+      max-width: 520px;
+      margin: 0 auto 50px;
+    }
+    .track-form__group {
+      margin-bottom: 20px;
+    }
+    .track-form__group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 8px;
+      color: var(--text-2);
+    }
+    .track-form__group input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 14px;
+      border: 1.5px solid var(--black);
+      background: var(--white);
+      color: var(--text);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .track-form__group input::placeholder {
+      color: var(--gray-4);
+    }
+    .track-form__group input:focus {
+      border-color: var(--black);
+      box-shadow: 0 0 0 3px rgba(13,13,13,.08);
+    }
+    .track-form__btn {
+      width: 100%;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 15px 26px;
+    }
+    .track-form__note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-4);
+      margin-top: 14px;
+    }
+
+    /* ─── TRACK RESULT ─── */
+    .track-result {
+      display: none;
+      max-width: 640px;
+      margin: 0 auto 60px;
+      border: 1.5px solid var(--border);
+      padding: 36px 40px;
+    }
+    .track-result.is-visible {
+      display: block;
+    }
+    .track-result__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .track-result__header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+    .track-result__header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .track-result__status-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    /* ─── TRACK STEPS ─── */
+    .track-steps {
+      position: relative;
+      padding: 0;
+    }
+    .track-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      position: relative;
+      padding-bottom: 32px;
+    }
+    .track-step:last-child {
+      padding-bottom: 0;
+    }
+    .track-step__indicator {
+      position: relative;
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-3);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+    .track-step__indicator svg {
+      display: none;
+    }
+    .track-step.is-completed .track-step__indicator {
+      background: var(--black);
+      border-color: var(--black);
+    }
+    .track-step.is-completed .track-step__indicator svg {
+      display: block;
+    }
+    .track-step.is-active .track-step__indicator {
+      border-color: var(--black);
+      box-shadow: 0 0 0 4px rgba(13,13,13,.1);
+    }
+    .track-step.is-active .track-step__indicator::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--black);
+    }
+    /* Connector line */
+    .track-step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      width: 2px;
+      height: calc(100% - 32px);
+      background: var(--gray-2);
+    }
+    .track-step.is-completed:not(:last-child)::before {
+      background: var(--black);
+    }
+    .track-step__body {
+      padding-top: 4px;
+    }
+    .track-step__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .track-step__desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .track-step__date {
+      font-size: 12px;
+      color: var(--gray-4);
+      margin-top: 4px;
+    }
+    .track-step:not(.is-completed):not(.is-active) .track-step__title {
+      color: var(--gray-4);
+    }
+    .track-step:not(.is-completed):not(.is-active) .track-step__desc {
+      color: var(--gray-3);
+    }
+
+    /* ─── TRACKING INFO ─── */
+    .track-info {
+      max-width: 800px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+      padding-top: 50px;
+    }
+    .track-info h2 {
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 40px;
+      letter-spacing: -.01em;
+    }
+    .track-info__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .track-info__item {
+      text-align: center;
+      padding: 28px 20px;
+      background: var(--gray-1);
+    }
+    .track-info__icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid var(--black);
+      border-radius: 50%;
+    }
+    .track-info__item h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .track-info__item p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .page-hero { padding: 40px 0 36px; }
+      .track-form { padding: 0 16px; }
+      .track-result { padding: 28px 24px; margin-left: 16px; margin-right: 16px; }
+      .track-info__grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .track-result__header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header__inner container">
+      <button class="header__burger" aria-label="Menu" id="burger"><span></span><span></span><span></span></button>
+      <div class="header__logo"><a href="index.html">ZOLO<span>FASHIONS</span></a></div>
+      <nav class="header__nav" id="nav">
+        <ul>
+          <li class="has-mega">
+            <a href="#">Women <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></a>
+            <div class="mega">
+              <div class="mega__col"><h5>Clothing</h5><a href="#">Dresses</a><a href="#">Tops &amp; Blouses</a><a href="#">Trousers &amp; Jeans</a><a href="#">Skirts</a><a href="#">Jackets &amp; Coats</a><a href="#">Knitwear</a></div>
+              <div class="mega__col"><h5>Occasion</h5><a href="#">Casual</a><a href="#">Office Wear</a><a href="#">Evening</a><a href="#">Beach &amp; Resort</a><a href="#">Activewear</a></div>
+              <div class="mega__col"><h5>Accessories</h5><a href="#">Bags</a><a href="#">Jewellery</a><a href="#">Scarves</a><a href="#">Footwear</a></div>
+              <div class="mega__featured"><div class="mega__img"></div><span>New In</span><strong>Summer '25</strong></div>
+            </div>
+          </li>
+          <li class="has-mega">
+            <a href="#">Men <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></a>
+            <div class="mega">
+              <div class="mega__col"><h5>Clothing</h5><a href="#">T-Shirts &amp; Polos</a><a href="#">Shirts</a><a href="#">Trousers &amp; Chinos</a><a href="#">Jeans</a><a href="#">Jackets &amp; Coats</a></div>
+              <div class="mega__col"><h5>Style</h5><a href="#">Casual</a><a href="#">Smart Casual</a><a href="#">Formal</a><a href="#">Streetwear</a></div>
+              <div class="mega__col"><h5>Accessories</h5><a href="#">Bags &amp; Wallets</a><a href="#">Belts</a><a href="#">Caps &amp; Hats</a><a href="#">Footwear</a></div>
+              <div class="mega__featured"><div class="mega__img mega__img--2"></div><span>Essentials</span><strong>The Core Edit</strong></div>
+            </div>
+          </li>
+          <li><a href="#">New In</a></li>
+          <li><a href="#">Collections</a></li>
+          <li><a href="#vip" class="nav-vip">VIP</a></li>
+          <li><a href="#" class="nav-sale">Sale</a></li>
+        </ul>
+      </nav>
+      <div class="header__actions">
+        <button class="action-btn" id="searchToggle" aria-label="Search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+        <a href="login.html" class="action-btn" aria-label="Account"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+        <button class="action-btn action-btn--cart" aria-label="Bag"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="cart-badge">0</span></button>
+      </div>
+    </div>
+    <div class="search-bar" id="searchBar">
+      <div class="container search-bar__inner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" placeholder="Search for products, brands, categories..." id="searchInput" />
+        <button class="search-bar__close" id="searchClose"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <span>Track Your Order</span>
+        </nav>
+        <h1>Track Your Order</h1>
+        <p>Enter your order details below to see the current status of your shipment.</p>
+      </div>
+    </section>
+
+    <!-- PAGE CONTENT -->
+    <section class="page-content container">
+
+      <!-- TRACKING FORM -->
+      <form class="track-form" id="trackForm" onsubmit="return false">
+        <div class="track-form__group">
+          <label for="orderId">Order ID</label>
+          <input type="text" id="orderId" name="orderId" placeholder="e.g. ZF-20250215-78432" required />
+        </div>
+        <div class="track-form__group">
+          <label for="orderEmail">Email Address</label>
+          <input type="email" id="orderEmail" name="orderEmail" placeholder="The email used for your order" required />
+        </div>
+        <button type="submit" class="btn btn--black track-form__btn" id="trackBtn">Track Order</button>
+        <p class="track-form__note">Your Order ID can be found in your order confirmation email.</p>
+      </form>
+
+      <!-- TRACKING RESULT (hidden by default) -->
+      <div class="track-result" id="trackResult">
+        <div class="track-result__header">
+          <div>
+            <h3>Order <span id="resultOrderId">ZF-20250215-78432</span></h3>
+            <p>Placed on <span id="resultDate">15 February 2025</span> &middot; <span id="resultItems">3 items</span></p>
+          </div>
+          <span class="track-result__status-badge" id="resultBadge">In Transit</span>
+        </div>
+        <div class="track-steps">
+          <div class="track-step is-completed">
+            <div class="track-step__indicator">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="track-step__body">
+              <div class="track-step__title">Order Confirmed</div>
+              <div class="track-step__desc">Your order has been placed and confirmed.</div>
+              <div class="track-step__date">15 Feb 2025, 10:32 AM</div>
+            </div>
+          </div>
+          <div class="track-step is-completed">
+            <div class="track-step__indicator">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="track-step__body">
+              <div class="track-step__title">Packed &amp; Ready</div>
+              <div class="track-step__desc">Items have been packed and handed to the courier.</div>
+              <div class="track-step__date">16 Feb 2025, 2:15 PM</div>
+            </div>
+          </div>
+          <div class="track-step is-active">
+            <div class="track-step__indicator">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="track-step__body">
+              <div class="track-step__title">In Transit</div>
+              <div class="track-step__desc">Your package is on its way to you.</div>
+              <div class="track-step__date">17 Feb 2025, 9:45 AM</div>
+            </div>
+          </div>
+          <div class="track-step">
+            <div class="track-step__indicator">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="track-step__body">
+              <div class="track-step__title">Out for Delivery</div>
+              <div class="track-step__desc">The courier is delivering your package today.</div>
+              <div class="track-step__date"></div>
+            </div>
+          </div>
+          <div class="track-step">
+            <div class="track-step__indicator">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="track-step__body">
+              <div class="track-step__title">Delivered</div>
+              <div class="track-step__desc">Your order has been delivered successfully.</div>
+              <div class="track-step__date"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOW TRACKING WORKS -->
+      <div class="track-info">
+        <h2>How Order Tracking Works</h2>
+        <div class="track-info__grid">
+          <div class="track-info__item">
+            <div class="track-info__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <h4>Enter Your Details</h4>
+            <p>Use the Order ID from your confirmation email and the email address you placed the order with.</p>
+          </div>
+          <div class="track-info__item">
+            <div class="track-info__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h4>Real-Time Updates</h4>
+            <p>Your tracking status updates at every stage, from order confirmation through to delivery at your door.</p>
+          </div>
+          <div class="track-info__item">
+            <div class="track-info__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.59 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.5 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <h4>Need Help?</h4>
+            <p>If your tracking isn't updating, contact us at <strong>+91 9234408700</strong> or email <strong>idealtradingco940@gmail.com</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__trust">
+      <div class="container footer__trust-grid">
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><strong>Free Delivery</strong><span>On orders ₹999+</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><div><strong>30-Day Returns</strong><span>Easy, free returns</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div><strong>Secure Payment</strong><span>256-bit SSL encryption</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.59 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.5 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><div><strong>Phone Support</strong><span>+91 9234408700</span></div></div>
+      </div>
+    </div>
+    <div class="footer__main container">
+      <div class="footer__brand">
+        <div class="footer__logo">ZOLO<span>FASHIONS</span></div>
+        <p>Fashion for those who stand out.<br />Curated textiles and lifestyle products since 2025.</p>
+        <p class="footer__legal-name">Zolo Trends Private Limited</p>
+      </div>
+      <div class="footer__col">
+        <h5>Shop</h5>
+        <a href="#">New Arrivals</a><a href="#">Women's Clothing</a><a href="#">Men's Clothing</a><a href="#">Accessories</a><a href="#">Footwear</a><a href="#">Collections</a><a href="#">Limited Editions</a><a href="#" class="footer__link--sale">Sale — Up to 70% Off</a>
+      </div>
+      <div class="footer__col">
+        <h5>Support</h5>
+        <a href="contact.html">Contact Us</a>
+        <a href="faq.html">FAQs</a>
+        <a href="shipping.html">Shipping &amp; Returns</a>
+        <a href="track-order.html">Track Your Order</a>
+        <a href="#vip">VIP Programme</a>
+      </div>
+      <div class="footer__col footer__col--contact">
+        <h5>Contact</h5>
+        <div class="footer__contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.59 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.5 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <div><a href="tel:+919234408700">+91 9234408700</a><small>Mon–Sat, 10AM–6PM IST</small></div>
+        </div>
+        <div class="footer__contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div><a href="mailto:idealtradingco940@gmail.com">idealtradingco940@gmail.com</a><small>We reply within 24 hours</small></div>
+        </div>
+        <div class="footer__contact-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><span>Desri Road, Sadabpur Mahua<br />Near Canara Bank, Mahua<br />Vaishali, Bihar — 844122, India</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer__reg">
+      <div class="container footer__reg-inner">
+        <div class="footer__reg-item"><span class="reg-key">Legal Name</span><span>Zolo Trends Private Limited</span></div>
+        <div class="footer__reg-item"><span class="reg-key">CIN</span><span>U47820BR2025PTC079961</span></div>
+        <div class="footer__reg-item"><span class="reg-key">GSTIN</span><span>10AACCZ7944H1Z9</span></div>
+        <div class="footer__reg-item"><span class="reg-key">PAN</span><span>AACCZ7944H</span></div>
+        <div class="footer__reg-item"><span class="reg-key">TAN</span><span>PTNZ00667C</span></div>
+        <div class="footer__reg-item"><span class="reg-key">Incorporated</span><span>06 Nov 2025 · Bihar, India</span></div>
+        <div class="footer__reg-item"><span class="reg-key">Directors</span><span>Prince Kumar &amp; Parveen Kumar</span></div>
+      </div>
+    </div>
+    <div class="footer__pay">
+      <div class="container footer__pay-inner">
+        <span class="footer__pay-label">We accept:</span>
+        <div class="footer__pay-icons"><span class="pay-chip">Visa</span><span class="pay-chip">Mastercard</span><span class="pay-chip">RuPay</span><span class="pay-chip">UPI</span><span class="pay-chip">Net Banking</span><span class="pay-chip">COD</span><span class="pay-chip">EMI</span></div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p>&copy; 2025 Zolo Trends Private Limited (Zolo Fashions) &middot; All rights reserved &middot; Registered in Bihar, India</p>
+        <nav class="footer__bottom-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="shipping.html">Return &amp; Refund Policy</a><a href="shipping.html">Shipping Policy</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    // Simple demo: show tracking result when form is submitted
+    document.getElementById('trackForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var orderId = document.getElementById('orderId').value.trim();
+      var email = document.getElementById('orderEmail').value.trim();
+      if (orderId && email) {
+        document.getElementById('resultOrderId').textContent = orderId;
+        var resultEl = document.getElementById('trackResult');
+        resultEl.classList.add('is-visible');
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  </script>
+</body>
+</html>
