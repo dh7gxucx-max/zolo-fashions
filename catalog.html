@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Men's Catalogue — Zolo Fashions</title>
+  <meta name="description" content="Shop men's clothing at Zolo Fashions — outerwear, trousers, sweaters and t-shirts." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .catalog { padding: 48px 0 80px; }
+    .catalog__layout { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start; }
+    .catalog__sidebar { position: sticky; top: 82px; }
+    .filter-group { margin-bottom: 28px; }
+    .filter-group__title { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--black); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .filter-check { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--gray-5); cursor: pointer; padding: 4px 0; transition: color .2s; user-select: none; }
+    .filter-check:hover { color: var(--black); }
+    .filter-check input[type="checkbox"] { accent-color: var(--black); width: 14px; height: 14px; cursor: pointer; flex-shrink: 0; }
+    .filter-count { color: var(--gray-3); font-size: 12px; margin-left: auto; }
+    .filter-clear { font-size: 12px; font-weight: 600; color: var(--gray-4); cursor: pointer; text-decoration: underline; margin-top: 20px; display: inline-block; transition: color .2s; }
+    .filter-clear:hover { color: var(--black); }
+    .catalog__toolbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 24px; gap: 16px; }
+    .catalog__showing { font-size: 13px; color: var(--gray-5); }
+    .catalog__showing strong { color: var(--black); }
+    .catalog__sort { font-size: 13px; font-family: inherit; padding: 8px 12px; border: 1px solid var(--border); background: var(--white); color: var(--black); cursor: pointer; outline: none; transition: border-color .2s; }
+    .catalog__sort:focus { border-color: var(--black); }
+    .catalog__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .catalog__no-results { display: none; grid-column: 1/-1; text-align: center; padding: 64px 24px; color: var(--gray-4); flex-direction: column; align-items: center; gap: 12px; }
+    .catalog__no-results p { font-size: 15px; margin-top: 4px; }
+    .active-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .active-filter-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 10px; background: var(--black); color: var(--white); }
+    .active-filter-tag button { color: var(--white); font-size: 16px; line-height: 1; cursor: pointer; background: none; border: none; }
+    @media (max-width: 1100px) { .catalog__grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px) { .catalog__layout { grid-template-columns: 1fr; } .catalog__sidebar { position: static; } .filter-groups { display: flex; flex-wrap: wrap; gap: 24px; } .filter-group { margin-bottom: 0; min-width: 140px; } .catalog__grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .catalog__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header__inner container">
+      <button class="header__burger" aria-label="Menu" id="burger"><span></span><span></span><span></span></button>
+      <div class="header__logo"><a href="index.html">ZOLO<span>FASHIONS</span></a></div>
+      <nav class="header__nav" id="nav">
+        <ul>
+          <li><a href="catalog.html">All Men's</a></li>
+          <li><a href="catalog.html?category=outerwear">Outerwear</a></li>
+          <li><a href="catalog.html?category=sweaters">Sweaters</a></li>
+          <li><a href="catalog.html?category=trousers">Trousers</a></li>
+          <li><a href="catalog.html?category=tshirts">T-Shirts</a></li>
+          <li><a href="index.html#vip" class="nav-vip">VIP</a></li>
+          <li><a href="#" class="nav-sale">Sale</a></li>
+        </ul>
+      </nav>
+      <div class="header__actions">
+        <button class="action-btn" id="searchToggle" aria-label="Search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+        <a href="login.html" class="action-btn" aria-label="Account"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+        <button class="action-btn action-btn--cart" aria-label="Bag"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="cart-badge">0</span></button>
+      </div>
+    </div>
+    <div class="search-bar" id="searchBar">
+      <div class="container search-bar__inner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" placeholder="Search products..." id="searchInput" />
+        <button class="search-bar__close" id="searchClose"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <svg class="breadcrumb__sep" width="7" height="10" viewBox="0 0 7 10"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+          <span id="breadcrumbCurrent">Men's Clothing</span>
+        </nav>
+        <h1 class="page-hero__title" id="catalogHeading">Men's Clothing</h1>
+        <p class="page-hero__sub"><span id="productCount">20</span> products</p>
+      </div>
+    </section>
+
+    <section class="catalog">
+      <div class="container">
+        <div class="catalog__layout">
+
+          <!-- SIDEBAR -->
+          <aside class="catalog__sidebar">
+            <div class="filter-groups">
+              <div class="filter-group">
+                <h4 class="filter-group__title">Category</h4>
+                <label class="filter-check"><input type="checkbox" value="outerwear" data-filter="category" /> Outerwear <span class="filter-count">(5)</span></label>
+                <label class="filter-check"><input type="checkbox" value="trousers" data-filter="category" /> Trousers <span class="filter-count">(5)</span></label>
+                <label class="filter-check"><input type="checkbox" value="sweaters" data-filter="category" /> Sweaters <span class="filter-count">(5)</span></label>
+                <label class="filter-check"><input type="checkbox" value="tshirts" data-filter="category" /> T-Shirts <span class="filter-count">(5)</span></label>
+              </div>
+              <div class="filter-group">
+                <h4 class="filter-group__title">Price</h4>
+                <label class="filter-check"><input type="checkbox" value="0-999" data-filter="price" /> Under ₹1,000 <span class="filter-count">(2)</span></label>
+                <label class="filter-check"><input type="checkbox" value="1000-1999" data-filter="price" /> ₹1,000–₹2,000 <span class="filter-count">(8)</span></label>
+                <label class="filter-check"><input type="checkbox" value="2000-3999" data-filter="price" /> ₹2,000–₹4,000 <span class="filter-count">(7)</span></label>
+                <label class="filter-check"><input type="checkbox" value="4000-99999" data-filter="price" /> Above ₹4,000 <span class="filter-count">(3)</span></label>
+              </div>
+              <div class="filter-group">
+                <h4 class="filter-group__title">Offers</h4>
+                <label class="filter-check"><input type="checkbox" value="new" data-filter="badge" /> New Arrivals <span class="filter-count">(10)</span></label>
+                <label class="filter-check"><input type="checkbox" value="sale" data-filter="badge" /> On Sale <span class="filter-count">(4)</span></label>
+              </div>
+              <span class="filter-clear" id="clearFilters" style="display:none">Clear all filters</span>
+            </div>
+          </aside>
+
+          <!-- MAIN -->
+          <div class="catalog__main">
+            <div class="active-filters" id="activeTags"></div>
+            <div class="catalog__toolbar">
+              <span class="catalog__showing">Showing <strong id="showingCount">20</strong> of 20 products</span>
+              <select class="catalog__sort" id="catalogSort">
+                <option value="default">Sort: Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+                <option value="new">Newest First</option>
+              </select>
+            </div>
+
+            <div class="catalog__grid" id="catalogGrid">
+
+              <!-- OUTERWEAR -->
+              <div class="product-card" data-category="outerwear" data-price="5499" data-badge="new" data-rating="4.9" data-name="Classic Wool Overcoat">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1544923246-77307dd270b4?w=500&h=650&fit=crop" alt="Classic Wool Overcoat" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500&h=650&fit=crop" alt="Classic Wool Overcoat alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Classic Wool Overcoat</h3>
+                  <p class="product-card__cat">Men · Outerwear</p>
+                  <div class="product-card__price"><span class="price-current">₹5,499</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(63)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="outerwear" data-price="3299" data-badge="" data-rating="4.5" data-name="Bomber Jacket">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500&h=650&fit=crop" alt="Bomber Jacket" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1544923246-77307dd270b4?w=500&h=650&fit=crop" alt="Bomber Jacket alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Bomber Jacket</h3>
+                  <p class="product-card__cat">Men · Outerwear</p>
+                  <div class="product-card__price"><span class="price-current">₹3,299</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(108)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="outerwear" data-price="2159" data-badge="sale" data-rating="4.8" data-name="Denim Trucker Jacket">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&h=650&fit=crop" alt="Denim Trucker Jacket" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500&h=650&fit=crop" alt="Denim Trucker Jacket alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--sale">−20%</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Denim Trucker Jacket</h3>
+                  <p class="product-card__cat">Men · Outerwear</p>
+                  <div class="product-card__price"><span class="price-current">₹2,159</span><span class="price-old">₹2,699</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(87)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="outerwear" data-price="1999" data-badge="" data-rating="4.4" data-name="Quilted Vest">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?w=500&h=650&fit=crop" alt="Quilted Vest" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&h=650&fit=crop" alt="Quilted Vest alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Quilted Vest</h3>
+                  <p class="product-card__cat">Men · Outerwear</p>
+                  <div class="product-card__price"><span class="price-current">₹1,999</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(54)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="outerwear" data-price="3799" data-badge="new" data-rating="4.9" data-name="Harrington Jacket">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&h=650&fit=crop" alt="Harrington Jacket" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?w=500&h=650&fit=crop" alt="Harrington Jacket alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Harrington Jacket</h3>
+                  <p class="product-card__cat">Men · Outerwear</p>
+                  <div class="product-card__price"><span class="price-current">₹3,799</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(72)</span></div>
+                </div>
+              </div>
+
+              <!-- TROUSERS -->
+              <div class="product-card" data-category="trousers" data-price="1279" data-badge="sale" data-rating="4.4" data-name="Slim Fit Chinos">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=500&h=650&fit=crop" alt="Slim Fit Chinos" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&h=650&fit=crop" alt="Slim Fit Chinos alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--sale">−20%</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Slim Fit Chinos</h3>
+                  <p class="product-card__cat">Men · Trousers</p>
+                  <div class="product-card__price"><span class="price-current">₹1,279</span><span class="price-old">₹1,599</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(91)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="trousers" data-price="1899" data-badge="new" data-rating="4.9" data-name="Relaxed Linen Trousers">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&h=650&fit=crop" alt="Relaxed Linen Trousers" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=500&h=650&fit=crop" alt="Relaxed Linen Trousers alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Relaxed Linen Trousers</h3>
+                  <p class="product-card__cat">Men · Trousers</p>
+                  <div class="product-card__price"><span class="price-current">₹1,899</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(66)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="trousers" data-price="1799" data-badge="" data-rating="4.4" data-name="Straight Fit Jeans">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&h=650&fit=crop" alt="Straight Fit Jeans" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&h=650&fit=crop" alt="Straight Fit Jeans alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Straight Fit Jeans</h3>
+                  <p class="product-card__cat">Men · Trousers</p>
+                  <div class="product-card__price"><span class="price-current">₹1,799</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(132)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="trousers" data-price="2199" data-badge="" data-rating="4.9" data-name="Cargo Trousers">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1517438476312-10d79c077509?w=500&h=650&fit=crop" alt="Cargo Trousers" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&h=650&fit=crop" alt="Cargo Trousers alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Cargo Trousers</h3>
+                  <p class="product-card__cat">Men · Trousers</p>
+                  <div class="product-card__price"><span class="price-current">₹2,199</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(48)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="trousers" data-price="2499" data-badge="new" data-rating="4.9" data-name="Tailored Dress Pants">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=500&h=650&fit=crop" alt="Tailored Dress Pants" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1517438476312-10d79c077509?w=500&h=650&fit=crop" alt="Tailored Dress Pants alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Tailored Dress Pants</h3>
+                  <p class="product-card__cat">Men · Trousers</p>
+                  <div class="product-card__price"><span class="price-current">₹2,499</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(79)</span></div>
+                </div>
+              </div>
+
+              <!-- SWEATERS -->
+              <div class="product-card" data-category="sweaters" data-price="2799" data-badge="new" data-rating="4.9" data-name="Merino Wool Crewneck">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1614975059251-992f11792b9f?w=500&h=650&fit=crop" alt="Merino Wool Crewneck" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&h=650&fit=crop" alt="Merino Wool Crewneck alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Merino Wool Crewneck</h3>
+                  <p class="product-card__cat">Men · Sweaters</p>
+                  <div class="product-card__price"><span class="price-current">₹2,799</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(95)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="sweaters" data-price="2499" data-badge="" data-rating="4.4" data-name="Cable Knit Pullover">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&h=650&fit=crop" alt="Cable Knit Pullover" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1614975059251-992f11792b9f?w=500&h=650&fit=crop" alt="Cable Knit Pullover alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Cable Knit Pullover</h3>
+                  <p class="product-card__cat">Men · Sweaters</p>
+                  <div class="product-card__price"><span class="price-current">₹2,499</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(71)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="sweaters" data-price="3999" data-badge="" data-rating="4.9" data-name="Cashmere V-Neck">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=500&h=650&fit=crop" alt="Cashmere V-Neck" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&h=650&fit=crop" alt="Cashmere V-Neck alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Cashmere V-Neck</h3>
+                  <p class="product-card__cat">Men · Sweaters</p>
+                  <div class="product-card__price"><span class="price-current">₹3,999</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(43)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="sweaters" data-price="1874" data-badge="sale" data-rating="4.4" data-name="Half-Zip Fleece">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&h=650&fit=crop" alt="Half-Zip Fleece" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=500&h=650&fit=crop" alt="Half-Zip Fleece alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--sale">−25%</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Half-Zip Fleece</h3>
+                  <p class="product-card__cat">Men · Sweaters</p>
+                  <div class="product-card__price"><span class="price-current">₹1,874</span><span class="price-old">₹2,499</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(88)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="sweaters" data-price="1599" data-badge="new" data-rating="4.9" data-name="Lightweight Cotton Sweater">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1614975059251-992f11792b9f?w=500&h=650&fit=crop" alt="Lightweight Cotton Sweater" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=500&h=650&fit=crop" alt="Lightweight Cotton Sweater alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Lightweight Cotton Sweater</h3>
+                  <p class="product-card__cat">Men · Sweaters</p>
+                  <div class="product-card__price"><span class="price-current">₹1,599</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(59)</span></div>
+                </div>
+              </div>
+
+              <!-- T-SHIRTS -->
+              <div class="product-card" data-category="tshirts" data-price="899" data-badge="new" data-rating="4.9" data-name="Oversized Cotton Tee">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&h=650&fit=crop" alt="Oversized Cotton Tee" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500&h=650&fit=crop" alt="Oversized Cotton Tee alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Oversized Cotton Tee</h3>
+                  <p class="product-card__cat">Men · T-Shirts</p>
+                  <div class="product-card__price"><span class="price-current">₹899</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(213)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="tshirts" data-price="699" data-badge="" data-rating="4.4" data-name="Essential Crew Neck">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500&h=650&fit=crop" alt="Essential Crew Neck" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&h=650&fit=crop" alt="Essential Crew Neck alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Essential Crew Neck</h3>
+                  <p class="product-card__cat">Men · T-Shirts</p>
+                  <div class="product-card__price"><span class="price-current">₹699</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(187)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="tshirts" data-price="699" data-badge="sale" data-rating="4.9" data-name="Printed Graphic Tee">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&h=650&fit=crop" alt="Printed Graphic Tee" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500&h=650&fit=crop" alt="Printed Graphic Tee alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--sale">−30%</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Printed Graphic Tee</h3>
+                  <p class="product-card__cat">Men · T-Shirts</p>
+                  <div class="product-card__price"><span class="price-current">₹699</span><span class="price-old">₹999</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(156)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="tshirts" data-price="1299" data-badge="" data-rating="4.4" data-name="Polo Shirt">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&h=650&fit=crop" alt="Polo Shirt" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&h=650&fit=crop" alt="Polo Shirt alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Polo Shirt</h3>
+                  <p class="product-card__cat">Men · T-Shirts</p>
+                  <div class="product-card__price"><span class="price-current">₹1,299</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(94)</span></div>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="tshirts" data-price="1199" data-badge="new" data-rating="4.9" data-name="Henley Long Sleeve">
+                <div class="product-card__img-wrap">
+                  <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&h=650&fit=crop" alt="Henley Long Sleeve" loading="lazy" class="product-card__photo" />
+                  <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&h=650&fit=crop" alt="Henley Long Sleeve alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <button class="product-card__atc">Add to Bag</button>
+                </div>
+                <div class="product-card__info">
+                  <h3 class="product-card__name">Henley Long Sleeve</h3>
+                  <p class="product-card__cat">Men · T-Shirts</p>
+                  <div class="product-card__price"><span class="price-current">₹1,199</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(78)</span></div>
+                </div>
+              </div>
+
+              <div class="catalog__no-results" id="noResults">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <p>No products match your filters.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__trust">
+      <div class="container footer__trust-grid">
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div><strong>Free Delivery</strong><span>On orders ₹999+</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><div><strong>30-Day Returns</strong><span>Easy, free returns</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div><strong>Secure Payment</strong><span>256-bit SSL encryption</span></div></div>
+        <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.59 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.5 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><div><strong>Phone Support</strong><span>+91 9234408700</span></div></div>
+      </div>
+    </div>
+    <div class="footer__main container">
+      <div class="footer__brand">
+        <div class="footer__logo">ZOLO<span>FASHIONS</span></div>
+        <p>Fashion for those who stand out.<br />Curated men's clothing since 2025.</p>
+        <p class="footer__legal-name">Zolo Trends Private Limited</p>
+      </div>
+      <div class="footer__col">
+        <h5>Shop Men</h5>
+        <a href="catalog.html">All Products</a>
+        <a href="catalog.html?category=outerwear">Outerwear</a>
+        <a href="catalog.html?category=trousers">Trousers</a>
+        <a href="catalog.html?category=sweaters">Sweaters</a>
+        <a href="catalog.html?category=tshirts">T-Shirts</a>
+        <a href="#" class="footer__link--sale">Sale — Up to 70% Off</a>
+      </div>
+      <div class="footer__col">
+        <h5>Support</h5>
+        <a href="contact.html">Contact Us</a>
+        <a href="faq.html">FAQs</a>
+        <a href="shipping.html">Shipping &amp; Returns</a>
+        <a href="track-order.html">Track Your Order</a>
+        <a href="index.html#vip">VIP Programme</a>
+      </div>
+      <div class="footer__col footer__col--contact">
+        <h5>Contact</h5>
+        <div class="footer__contact-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.59 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.5 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><div><a href="tel:+919234408700">+91 9234408700</a><small>Mon–Sat, 10AM–6PM IST</small></div></div>
+        <div class="footer__contact-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><div><a href="mailto:idealtradingco940@gmail.com">idealtradingco940@gmail.com</a><small>We reply within 24 hours</small></div></div>
+        <div class="footer__contact-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><div><span>Desri Road, Sadabpur Mahua<br />Near Canara Bank, Mahua<br />Vaishali, Bihar — 844122, India</span></div></div>
+      </div>
+    </div>
+    <div class="footer__reg"><div class="container footer__reg-inner">
+      <div class="footer__reg-item"><span class="reg-key">Legal Name</span><span>Zolo Trends Private Limited</span></div>
+      <div class="footer__reg-item"><span class="reg-key">CIN</span><span>U47820BR2025PTC079961</span></div>
+      <div class="footer__reg-item"><span class="reg-key">GSTIN</span><span>10AACCZ7944H1Z9</span></div>
+      <div class="footer__reg-item"><span class="reg-key">PAN</span><span>AACCZ7944H</span></div>
+      <div class="footer__reg-item"><span class="reg-key">TAN</span><span>PTNZ00667C</span></div>
+      <div class="footer__reg-item"><span class="reg-key">Incorporated</span><span>06 Nov 2025 · Bihar, India</span></div>
+      <div class="footer__reg-item"><span class="reg-key">Directors</span><span>Prince Kumar &amp; Parveen Kumar</span></div>
+    </div></div>
+    <div class="footer__pay"><div class="container footer__pay-inner">
+      <span class="footer__pay-label">We accept:</span>
+      <div class="footer__pay-icons"><span class="pay-chip">Visa</span><span class="pay-chip">Mastercard</span><span class="pay-chip">RuPay</span><span class="pay-chip">UPI</span><span class="pay-chip">Net Banking</span><span class="pay-chip">COD</span><span class="pay-chip">EMI</span></div>
+    </div></div>
+    <div class="footer__bottom"><div class="container footer__bottom-inner">
+      <p>&copy; 2025 Zolo Trends Private Limited (Zolo Fashions) &middot; All rights reserved &middot; Registered in Bihar, India</p>
+      <nav class="footer__bottom-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="shipping.html">Return &amp; Refund Policy</a><a href="shipping.html">Shipping Policy</a></nav>
+    </div></div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+  (function(){
+    const grid = document.getElementById('catalogGrid');
+    const cards = Array.from(grid.querySelectorAll('.product-card'));
+    const noResults = document.getElementById('noResults');
+    const showingCount = document.getElementById('showingCount');
+    const productCount = document.getElementById('productCount');
+    const clearBtn = document.getElementById('clearFilters');
+    const sortSel = document.getElementById('catalogSort');
+    const activeTags = document.getElementById('activeTags');
+    const heading = document.getElementById('catalogHeading');
+    const breadcrumb = document.getElementById('breadcrumbCurrent');
+    const catLabels = { outerwear:'Outerwear', trousers:'Trousers', sweaters:'Sweaters', tshirts:'T-Shirts' };
+
+    // Pre-check from URL
+    const params = new URLSearchParams(window.location.search);
+    const urlCat = params.get('category');
+    if (urlCat) {
+      const cb = document.querySelector(`input[data-filter="category"][value="${urlCat}"]`);
+      if (cb) {
+        cb.checked = true;
+        const lbl = catLabels[urlCat] || urlCat;
+        if (heading) heading.textContent = "Men's " + lbl;
+        if (breadcrumb) breadcrumb.textContent = "Men's " + lbl;
+      }
+    }
+
+    function getActive() {
+      return {
+        categories: Array.from(document.querySelectorAll('input[data-filter="category"]:checked')).map(i=>i.value),
+        prices:     Array.from(document.querySelectorAll('input[data-filter="price"]:checked')).map(i=>i.value),
+        badges:     Array.from(document.querySelectorAll('input[data-filter="badge"]:checked')).map(i=>i.value),
+      };
+    }
+
+    function inRange(price, range) {
+      const [min,max] = range.split('-').map(Number);
+      return price >= min && price <= max;
+    }
+
+    function applyFilters() {
+      const { categories, prices, badges } = getActive();
+      const hasFilters = categories.length || prices.length || badges.length;
+      let visible = 0;
+      cards.forEach(card => {
+        const ok = (!categories.length || categories.includes(card.dataset.category))
+                && (!prices.length    || prices.some(r => inRange(+card.dataset.price, r)))
+                && (!badges.length    || badges.includes(card.dataset.badge));
+        card.style.display = ok ? '' : 'none';
+        if (ok) visible++;
+      });
+      noResults.style.display = visible === 0 ? 'flex' : 'none';
+      showingCount.textContent = visible;
+      productCount.textContent = visible;
+      clearBtn.style.display = hasFilters ? 'inline-block' : 'none';
+      renderTags(categories, prices, badges);
+    }
+
+    function renderTags(categories, prices, badges) {
+      const priceLabels = {'0-999':'Under ₹1,000','1000-1999':'₹1,000–₹2,000','2000-3999':'₹2,000–₹4,000','4000-99999':'Above ₹4,000'};
+      activeTags.innerHTML = '';
+      [...categories.map(v=>({t:'category',v,l:catLabels[v]||v})),
+       ...prices.map(v=>({t:'price',v,l:priceLabels[v]||v})),
+       ...badges.map(v=>({t:'badge',v,l:v==='new'?'New Arrivals':'On Sale'}))
+      ].forEach(({t,v,l}) => {
+        const tag = document.createElement('span');
+        tag.className = 'active-filter-tag';
+        tag.innerHTML = `${l} <button>&times;</button>`;
+        tag.querySelector('button').onclick = () => {
+          const cb = document.querySelector(`input[data-filter="${t}"][value="${v}"]`);
+          if (cb) { cb.checked = false; applyFilters(); }
+        };
+        activeTags.appendChild(tag);
+      });
+    }
+
+    function applySort() {
+      const val = sortSel.value;
+      [...cards].sort((a,b) => {
+        if (val==='price-low')  return +a.dataset.price - +b.dataset.price;
+        if (val==='price-high') return +b.dataset.price - +a.dataset.price;
+        if (val==='rating')     return +b.dataset.rating - +a.dataset.rating;
+        if (val==='new')        return (b.dataset.badge==='new'?1:0)-(a.dataset.badge==='new'?1:0);
+        return 0;
+      }).forEach(c => grid.insertBefore(c, noResults));
+    }
+
+    document.querySelectorAll('input[data-filter]').forEach(cb => cb.addEventListener('change', applyFilters));
+    clearBtn.addEventListener('click', () => { document.querySelectorAll('input[data-filter]').forEach(cb=>cb.checked=false); applyFilters(); });
+    sortSel.addEventListener('change', () => { applySort(); applyFilters(); });
+    applyFilters();
+  })();
+  </script>
+</body>
+</html>
