@@ -20,6 +20,19 @@ const MIME = {
 
 http.createServer((req, res) => {
   let url = req.url.split('?')[0];
+
+  // API: list image files in a subfolder
+  if (url.startsWith('/api/images/')) {
+    const folder = url.slice('/api/images/'.length);
+    const folderPath = path.join(DIR, 'images', folder);
+    fs.readdir(folderPath, (err, files) => {
+      res.writeHead(err ? 404 : 200, { 'Content-Type': 'application/json' });
+      const imgs = err ? [] : files.filter(f => /\.(jpe?g|png|webp)$/i.test(f)).sort();
+      res.end(JSON.stringify(imgs));
+    });
+    return;
+  }
+
   if (url === '/') url = '/index.html';
   const fp = path.join(DIR, url);
   const ext = path.extname(fp).toLowerCase();

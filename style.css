@@ -235,10 +235,10 @@ input, textarea, select { font: inherit; }
   border: 1px solid var(--border);
   border-top: 2px solid var(--black);
   display: grid;
-  grid-template-columns: repeat(3, 1fr) 180px;
-  gap: 40px;
-  padding: 32px 36px;
-  min-width: 680px;
+  grid-template-columns: 1fr;
+  gap: 0;
+  padding: 24px 32px;
+  min-width: 180px;
   opacity: 0;
   pointer-events: none;
   transform: translateY(8px);
@@ -668,7 +668,8 @@ input, textarea, select { font: inherit; }
 }
 .badge--new     { background: var(--black); color: var(--white); }
 .badge--sale    { background: var(--red); color: var(--white); }
-.badge--limited { background: var(--white); color: var(--black); border: 1px solid var(--border); }
+.badge--limited    { background: var(--white); color: var(--black); border: 1px solid var(--border); }
+.badge--bestseller { background: #c8a86b; color: var(--white); }
 
 .product-card__actions {
   position: absolute;
@@ -2244,6 +2245,28 @@ a.contact-card__main:hover {
 .auth-checkbox a {
   color: var(--black);
   border-bottom: 1px solid var(--gray-3);
+}
+.auth-consents {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px 4px;
+  margin-bottom: 20px;
+  background: var(--gray-1);
+}
+.auth-consents__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gray-4);
+  margin-bottom: 14px;
+}
+.auth-consents .auth-checkbox {
+  margin-bottom: 12px;
+}
+.auth-consents .auth-checkbox label strong {
+  color: var(--black-2);
+  font-weight: 600;
 }
 
 /* ─── DASHBOARD ─── */
