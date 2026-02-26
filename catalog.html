@@ -35,6 +35,47 @@
     @media (max-width: 1100px) { .catalog__grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 900px) { .catalog__layout { grid-template-columns: 1fr; } .catalog__sidebar { position: static; } .filter-groups { display: flex; flex-wrap: wrap; gap: 24px; } .filter-group { margin-bottom: 0; min-width: 140px; } .catalog__grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 640px) { .catalog__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+
+    /* QUICK VIEW BUTTON */
+    .product-card__quickview { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,.95); color: var(--black); border: none; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 7px 16px; cursor: pointer; white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; }
+    .product-card:hover .product-card__quickview { opacity: 1; pointer-events: auto; }
+    /* Best Seller badge */
+    .badge--bestseller { background: #c8a86b; color: #fff; }
+
+    /* QUICK VIEW MODAL */
+    .qv-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 1200; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
+    .qv-overlay.open { display: flex; }
+    .qv-modal { background: var(--white); max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: qvIn .25s ease; }
+    @keyframes qvIn { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:none; } }
+    .qv-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 26px; cursor: pointer; color: var(--black); z-index: 10; line-height: 1; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+    .qv-close:hover { background: var(--gray-1); }
+    .qv-body { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; }
+    .qv-img-col { background: #f5f5f5; }
+    .qv-img-wrap { position: relative; height: 100%; min-height: 400px; }
+    .qv-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .qv-badge-overlay { position: absolute; top: 14px; left: 14px; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 4px 9px; }
+    .qv-info-col { padding: 36px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .qv-cat { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--gray-4); margin: 0; }
+    .qv-title { font-size: 22px; font-weight: 800; margin: 0; line-height: 1.2; }
+    .qv-rating { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--gray-5); }
+    .qv-rating .stars { color: #f5a623; font-size: 14px; }
+    .qv-price { font-size: 20px; font-weight: 700; color: var(--black); }
+    .qv-color { font-size: 13px; color: var(--gray-5); margin: 0; }
+    .qv-desc { font-size: 13.5px; line-height: 1.65; color: var(--gray-5); margin: 0; flex: 1; }
+    .qv-sizes-block { margin-top: 4px; }
+    .qv-sizes-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; color: var(--black); }
+    .qv-sizes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .qv-size-btn { border: 1.5px solid var(--border); background: none; font-size: 12px; font-weight: 600; width: 44px; height: 36px; cursor: pointer; transition: all .15s; color: var(--black); }
+    .qv-size-btn:hover, .qv-size-btn.active { border-color: var(--black); background: var(--black); color: var(--white); }
+    .qv-size-guide { font-size: 11px; color: var(--gray-4); text-decoration: underline; cursor: pointer; }
+    .qv-actions { display: flex; gap: 10px; align-items: center; margin-top: 4px; }
+    .qv-atc { flex: 1; padding: 13px 20px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .qv-wish { width: 46px; height: 46px; border: 1.5px solid var(--border); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; }
+    .qv-wish:hover { border-color: var(--black); }
+    .qv-meta { display: flex; flex-direction: column; gap: 5px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .qv-meta span { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-5); }
+    .qv-meta svg { flex-shrink: 0; }
+    @media (max-width: 680px) { .qv-body { grid-template-columns: 1fr; } .qv-img-wrap { min-height: 280px; } .qv-info-col { padding: 24px 20px; } }
   </style>
 </head>
 <body>
@@ -130,83 +171,113 @@
             <div class="catalog__grid" id="catalogGrid">
 
               <!-- OUTERWEAR -->
-              <div class="product-card" data-category="outerwear" data-price="5499" data-badge="new" data-rating="4.9" data-name="Classic Wool Overcoat">
+              <div class="product-card" data-category="outerwear" data-price="4999" data-badge="new" data-rating="4.8" data-name="Diamond Quilt Bomber"
+                   data-color="Stone Grey" data-price-fmt="₹4,999"
+                   data-desc="Oversized diamond-quilted bomber in signature stone grey. Full-zip closure with silver-tone hardware, dual angled zip pockets, and a structured stand collar. Lightweight insulation keeps you warm without the bulk — a versatile layer for the modern wardrobe."
+                   data-sizes="S,M,L,XL,XXL" data-img="images/outerwear/jacket-beige-quilted.jpg">
                 <div class="product-card__img-wrap">
-                  <img src="https://images.unsplash.com/photo-1544923246-77307dd270b4?w=500&h=650&fit=crop" alt="Classic Wool Overcoat" loading="lazy" class="product-card__photo" />
-                  <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500&h=650&fit=crop" alt="Classic Wool Overcoat alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <img src="images/outerwear/jacket-beige-quilted.jpg" alt="Diamond Quilt Bomber" loading="lazy" class="product-card__photo" />
+                  <img src="images/outerwear/jacket-beige-quilted.jpg" alt="Diamond Quilt Bomber detail" loading="lazy" class="product-card__photo product-card__photo--hover" />
                   <div class="product-card__badges"><span class="badge badge--new">New</span></div>
-                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <div class="product-card__actions">
+                    <button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="product-card__quickview" aria-label="Quick View">Quick View</button>
+                  </div>
                   <button class="product-card__atc">Add to Bag</button>
                 </div>
-                <div class="product-card__info">
-                  <h3 class="product-card__name">Classic Wool Overcoat</h3>
-                  <p class="product-card__cat">Men · Outerwear</p>
-                  <div class="product-card__price"><span class="price-current">₹5,499</span></div>
+                <div class="product-card__info" style="cursor:pointer">
+                  <h3 class="product-card__name">Diamond Quilt Bomber</h3>
+                  <p class="product-card__cat">Men · Outerwear · Stone Grey</p>
+                  <div class="product-card__price"><span class="price-current">₹4,999</span></div>
                   <div class="product-card__rating"><div class="stars">★★★★★</div><span>(63)</span></div>
                 </div>
               </div>
 
-              <div class="product-card" data-category="outerwear" data-price="3299" data-badge="" data-rating="4.5" data-name="Bomber Jacket">
+              <div class="product-card" data-category="outerwear" data-price="3999" data-badge="new" data-rating="4.6" data-name="Urban Shield Padded Jacket"
+                   data-color="Midnight Black" data-price-fmt="₹3,999"
+                   data-desc="Shirt-inspired padded jacket with clean horizontal quilting. Hidden snap button closure, chest patch pocket, and two large flap pockets. A versatile hybrid silhouette that works equally well for smart casual and everyday streetwear."
+                   data-sizes="S,M,L,XL,XXL" data-img="images/outerwear/jacket-black-padded.jpg">
                 <div class="product-card__img-wrap">
-                  <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500&h=650&fit=crop" alt="Bomber Jacket" loading="lazy" class="product-card__photo" />
-                  <img src="https://images.unsplash.com/photo-1544923246-77307dd270b4?w=500&h=650&fit=crop" alt="Bomber Jacket alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
-                  <div class="product-card__badges"></div>
-                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <img src="images/outerwear/jacket-black-padded.jpg" alt="Urban Shield Padded Jacket" loading="lazy" class="product-card__photo" />
+                  <img src="images/outerwear/jacket-black-padded.jpg" alt="Urban Shield Padded Jacket detail" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions">
+                    <button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="product-card__quickview" aria-label="Quick View">Quick View</button>
+                  </div>
                   <button class="product-card__atc">Add to Bag</button>
                 </div>
-                <div class="product-card__info">
-                  <h3 class="product-card__name">Bomber Jacket</h3>
-                  <p class="product-card__cat">Men · Outerwear</p>
-                  <div class="product-card__price"><span class="price-current">₹3,299</span></div>
+                <div class="product-card__info" style="cursor:pointer">
+                  <h3 class="product-card__name">Urban Shield Padded Jacket</h3>
+                  <p class="product-card__cat">Men · Outerwear · Midnight Black</p>
+                  <div class="product-card__price"><span class="price-current">₹3,999</span></div>
                   <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(108)</span></div>
                 </div>
               </div>
 
-              <div class="product-card" data-category="outerwear" data-price="2159" data-badge="sale" data-rating="4.8" data-name="Denim Trucker Jacket">
+              <div class="product-card" data-category="outerwear" data-price="5499" data-badge="limited" data-rating="4.9" data-name="Onyx Diamond Quilted Jacket"
+                   data-color="Jet Black" data-price-fmt="₹5,499"
+                   data-desc="Statement diamond quilting in jet black with a bold oversized silhouette. Full-zip closure with premium silver hardware, zippered side pockets, and a high stand collar. The go-to piece when you want effortless winter style with an edge."
+                   data-sizes="S,M,L,XL,XXL" data-img="images/outerwear/jacket-black-diamond.jpg">
                 <div class="product-card__img-wrap">
-                  <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&h=650&fit=crop" alt="Denim Trucker Jacket" loading="lazy" class="product-card__photo" />
-                  <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500&h=650&fit=crop" alt="Denim Trucker Jacket alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
-                  <div class="product-card__badges"><span class="badge badge--sale">−20%</span></div>
-                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <img src="images/outerwear/jacket-black-diamond.jpg" alt="Onyx Diamond Quilted Jacket" loading="lazy" class="product-card__photo" />
+                  <img src="images/outerwear/jacket-black-diamond.jpg" alt="Onyx Diamond Quilted Jacket detail" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--limited">Limited</span></div>
+                  <div class="product-card__actions">
+                    <button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="product-card__quickview" aria-label="Quick View">Quick View</button>
+                  </div>
                   <button class="product-card__atc">Add to Bag</button>
                 </div>
-                <div class="product-card__info">
-                  <h3 class="product-card__name">Denim Trucker Jacket</h3>
-                  <p class="product-card__cat">Men · Outerwear</p>
-                  <div class="product-card__price"><span class="price-current">₹2,159</span><span class="price-old">₹2,699</span></div>
+                <div class="product-card__info" style="cursor:pointer">
+                  <h3 class="product-card__name">Onyx Diamond Quilted Jacket</h3>
+                  <p class="product-card__cat">Men · Outerwear · Jet Black</p>
+                  <div class="product-card__price"><span class="price-current">₹5,499</span></div>
                   <div class="product-card__rating"><div class="stars">★★★★★</div><span>(87)</span></div>
                 </div>
               </div>
 
-              <div class="product-card" data-category="outerwear" data-price="1999" data-badge="" data-rating="4.4" data-name="Quilted Vest">
+              <div class="product-card" data-category="outerwear" data-price="6999" data-badge="new" data-rating="4.9" data-name="Arctic Command Hooded Parka"
+                   data-color="Carbon Black" data-price-fmt="₹6,999"
+                   data-desc="Mid-length insulated parka engineered for serious winter protection. Adjustable hood, snap button placket closure, two generous front pockets, and heavy quilted insulation throughout. Built to keep you warm from the first frost to the last."
+                   data-sizes="S,M,L,XL,XXL" data-img="images/outerwear/jacket-black-parka.jpg">
                 <div class="product-card__img-wrap">
-                  <img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?w=500&h=650&fit=crop" alt="Quilted Vest" loading="lazy" class="product-card__photo" />
-                  <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&h=650&fit=crop" alt="Quilted Vest alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
-                  <div class="product-card__badges"></div>
-                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <img src="images/outerwear/jacket-black-parka.jpg" alt="Arctic Command Hooded Parka" loading="lazy" class="product-card__photo" />
+                  <img src="images/outerwear/jacket-black-parka.jpg" alt="Arctic Command Hooded Parka detail" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
+                  <div class="product-card__actions">
+                    <button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="product-card__quickview" aria-label="Quick View">Quick View</button>
+                  </div>
                   <button class="product-card__atc">Add to Bag</button>
                 </div>
-                <div class="product-card__info">
-                  <h3 class="product-card__name">Quilted Vest</h3>
-                  <p class="product-card__cat">Men · Outerwear</p>
-                  <div class="product-card__price"><span class="price-current">₹1,999</span></div>
-                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(54)</span></div>
+                <div class="product-card__info" style="cursor:pointer">
+                  <h3 class="product-card__name">Arctic Command Hooded Parka</h3>
+                  <p class="product-card__cat">Men · Outerwear · Carbon Black</p>
+                  <div class="product-card__price"><span class="price-current">₹6,999</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(54)</span></div>
                 </div>
               </div>
 
-              <div class="product-card" data-category="outerwear" data-price="3799" data-badge="new" data-rating="4.9" data-name="Harrington Jacket">
+              <div class="product-card" data-category="outerwear" data-price="4499" data-badge="bestseller" data-rating="4.7" data-name="Storm Puffer Hooded Jacket"
+                   data-color="Deep Black" data-price-fmt="₹4,499"
+                   data-desc="Horizontal-quilted puffer jacket with a generous hood and full-zip front. Relaxed and slightly oversized fit, with side slip pockets. Lightweight yet seriously insulated — the essential winter layer you will reach for every single day."
+                   data-sizes="S,M,L,XL,XXL" data-img="images/outerwear/jacket-black-puffer.jpg">
                 <div class="product-card__img-wrap">
-                  <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&h=650&fit=crop" alt="Harrington Jacket" loading="lazy" class="product-card__photo" />
-                  <img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?w=500&h=650&fit=crop" alt="Harrington Jacket alt" loading="lazy" class="product-card__photo product-card__photo--hover" />
-                  <div class="product-card__badges"><span class="badge badge--new">New</span></div>
-                  <div class="product-card__actions"><button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+                  <img src="images/outerwear/jacket-black-puffer.jpg" alt="Storm Puffer Hooded Jacket" loading="lazy" class="product-card__photo" />
+                  <img src="images/outerwear/jacket-black-puffer.jpg" alt="Storm Puffer Hooded Jacket detail" loading="lazy" class="product-card__photo product-card__photo--hover" />
+                  <div class="product-card__badges"><span class="badge badge--bestseller">Best Seller</span></div>
+                  <div class="product-card__actions">
+                    <button class="product-card__wishlist" aria-label="Wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                    <button class="product-card__quickview" aria-label="Quick View">Quick View</button>
+                  </div>
                   <button class="product-card__atc">Add to Bag</button>
                 </div>
-                <div class="product-card__info">
-                  <h3 class="product-card__name">Harrington Jacket</h3>
-                  <p class="product-card__cat">Men · Outerwear</p>
-                  <div class="product-card__price"><span class="price-current">₹3,799</span></div>
-                  <div class="product-card__rating"><div class="stars">★★★★★</div><span>(72)</span></div>
+                <div class="product-card__info" style="cursor:pointer">
+                  <h3 class="product-card__name">Storm Puffer Hooded Jacket</h3>
+                  <p class="product-card__cat">Men · Outerwear · Deep Black</p>
+                  <div class="product-card__price"><span class="price-current">₹4,499</span></div>
+                  <div class="product-card__rating"><div class="stars">★★★★☆</div><span>(72)</span></div>
                 </div>
               </div>
 
@@ -464,6 +535,44 @@
     </section>
   </main>
 
+  <!-- PRODUCT QUICK VIEW MODAL -->
+  <div class="qv-overlay" id="qvOverlay">
+    <div class="qv-modal" id="qvModal" role="dialog" aria-modal="true" aria-labelledby="qvTitle">
+      <button class="qv-close" id="qvClose" aria-label="Close">&times;</button>
+      <div class="qv-body">
+        <div class="qv-img-col">
+          <div class="qv-img-wrap">
+            <img id="qvImg" src="" alt="" />
+            <span class="qv-badge-overlay" id="qvBadge"></span>
+          </div>
+        </div>
+        <div class="qv-info-col">
+          <p class="qv-cat" id="qvCat">Men · Outerwear</p>
+          <h2 class="qv-title" id="qvTitle"></h2>
+          <div class="qv-rating" id="qvRating"></div>
+          <div class="qv-price" id="qvPrice"></div>
+          <p class="qv-color">Color: <strong id="qvColor"></strong></p>
+          <p class="qv-desc" id="qvDesc"></p>
+          <div class="qv-sizes-block">
+            <p class="qv-sizes-label">Select Size:</p>
+            <div class="qv-sizes" id="qvSizes"></div>
+            <a href="#" class="qv-size-guide">Size Guide →</a>
+          </div>
+          <div class="qv-actions">
+            <button class="btn btn--black qv-atc" id="qvAtcBtn">Add to Bag</button>
+            <button class="product-card__wishlist qv-wish" aria-label="Wishlist">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="qv-meta">
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Free delivery on ₹999+</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> 30-day easy returns</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer__trust">
@@ -525,6 +634,75 @@
 
   <script src="main.js"></script>
   <script>
+  /* ---- QUICK VIEW MODAL ---- */
+  (function(){
+    const overlay = document.getElementById('qvOverlay');
+    const modal   = document.getElementById('qvModal');
+    const closeBtn= document.getElementById('qvClose');
+
+    function openQV(card) {
+      const name  = card.dataset.name || card.querySelector('.product-card__name')?.textContent || '';
+      const price = card.dataset.priceFmt || '₹' + (+card.dataset.price).toLocaleString('en-IN');
+      const desc  = card.dataset.desc  || 'Premium quality menswear. Crafted with care for the modern man.';
+      const color = card.dataset.color || '';
+      const img   = card.dataset.img   || card.querySelector('.product-card__photo')?.src || '';
+      const sizes = (card.dataset.sizes || 'S,M,L,XL,XXL').split(',');
+      const rating= parseFloat(card.dataset.rating) || 4.5;
+      const cat   = card.querySelector('.product-card__cat')?.textContent || 'Men · Outerwear';
+      const badge = card.querySelector('.badge');
+
+      document.getElementById('qvTitle').textContent = name;
+      document.getElementById('qvPrice').textContent = price;
+      document.getElementById('qvDesc').textContent  = desc;
+      document.getElementById('qvColor').textContent = color || '—';
+      document.getElementById('qvCat').textContent   = cat;
+      document.getElementById('qvImg').src           = img;
+      document.getElementById('qvImg').alt           = name;
+
+      // Badge
+      const qvBadge = document.getElementById('qvBadge');
+      if (badge) {
+        qvBadge.textContent = badge.textContent;
+        qvBadge.className   = 'qv-badge-overlay badge ' + badge.className.replace('badge','').trim();
+        qvBadge.style.display = '';
+      } else { qvBadge.style.display = 'none'; }
+
+      // Rating stars
+      const fullStars = Math.round(rating);
+      const starsHtml = Array.from({length:5},(_,i)=>i<fullStars?'★':'☆').join('');
+      document.getElementById('qvRating').innerHTML =
+        `<span class="stars" style="color:#f5a623;font-size:16px">${starsHtml}</span><span>${rating.toFixed(1)} / 5.0</span>`;
+
+      // Sizes
+      const sizesEl = document.getElementById('qvSizes');
+      sizesEl.innerHTML = sizes.map(s =>
+        `<button class="qv-size-btn" onclick="this.closest('.qv-sizes').querySelectorAll('.qv-size-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${s}</button>`
+      ).join('');
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeQV() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeQV);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeQV(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeQV(); });
+
+    // Delegate clicks: Quick View button OR product info area
+    document.getElementById('catalogGrid').addEventListener('click', function(e) {
+      const qvBtn = e.target.closest('.product-card__quickview');
+      const infoArea = e.target.closest('.product-card__info');
+      const card = e.target.closest('.product-card');
+      if (!card) return;
+      if (qvBtn || infoArea) { e.preventDefault(); openQV(card); }
+    });
+  })();
+
+  /* ---- CATALOG FILTER/SORT ---- */
   (function(){
     const grid = document.getElementById('catalogGrid');
     const cards = Array.from(grid.querySelectorAll('.product-card'));
