@@ -89,23 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ── ADD TO BAG (FEEDBACK) ──
-  document.querySelectorAll('.product-card__atc').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const orig = btn.textContent;
-      btn.textContent = '✓ Added';
-      btn.style.background = '#1a1a1a';
-      setTimeout(() => {
-        btn.textContent = orig;
-        btn.style.background = '';
-      }, 1800);
-      // Update cart badge
-      const badge = document.querySelector('.cart-badge');
-      if (badge) badge.textContent = parseInt(badge.textContent || 0) + 1;
-    });
-  });
-
   // ── SCROLL REVEAL (simple) ──
   const revealEls = document.querySelectorAll(
     '.product-card, .value-item, .review-card, .vip__tier, .look, .cat-item'
