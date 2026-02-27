@@ -362,8 +362,9 @@ input, textarea, select { font: inherit; }
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 100px);
-  max-height: 820px;
+  height: calc(100vh - 64px);
+  max-height: 760px;
+  min-height: 560px;
 }
 
 /* LEFT */
@@ -402,11 +403,27 @@ input, textarea, select { font: inherit; }
   margin-bottom: 40px;
 }
 .hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero__badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+.hero__badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gray-5);
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
 .hero__stats {
   display: flex;
   align-items: center;
   gap: 28px;
-  padding-top: 48px;
+  padding-top: 32px;
   border-top: 1px solid var(--border);
 }
 .hero__stat strong {
